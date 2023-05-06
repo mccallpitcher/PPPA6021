@@ -1,0 +1,347 @@
+---
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    theme: cerulean
+    highlight: pygments
+---
+## Tutorial 1: The Basics Pt 1
+
+
+Welcome! This tutorial assumes that you've already done everything in "Get R Ready" [tutorial](https://blackboard.gwu.edu/bbcswebdav/pid-12130070-dt-content-rid-102523074_2/xid-102523074_2). If this is not the case, do that first.
+
+This tutorial introduces you to the RStudio interface and works through basic R commands we will build on throughout the course. 
+
+Sadly, no graphs for the first few tutorials! But these exercises will provide the coding foundation you’ll need to successfully build graphics. 
+
+Here is the plan for today:
+
+  A.  Getting to know RStudio
+  B.  Organizing your R script
+  C.  Running your first line of code
+  D.  Loading data into R
+  E.  Exploring a dataframe
+  F.  Getting info on variables of interest
+  G.  Subsetting 
+  H.  Sorting
+  I.  Problem set 1 \
+    1.  Where to turn in\
+    2.  What to turn in \
+    3.  Questions
+
+### A. Getting to know RStudio
+
+RStudio is an interface for using R.  
+
+  1. Start by opening RStudio
+  
+  2. Create an R ‘script’ by clicking `File > New File > R Script`.
+  
+  3. Save your R script in a folder on your computer (click `File > Save`) so you don’t lose your work. Pick a name for your file, just like you would for a Word document. 
+  
+  4. Now you should see four panels:
+  
+      a. *R script (top left)*\
+      An R script is simply a text file where you will write all your commands. Think of it sort of as a Word document, but with special powers! You will save an R script file for each tutorial. R scripts are great because they allow you to save your work, keep track of your commands, and give you the chance to write, re-write, tweak, and rerun the code you’ve written. 
+      b. *Console (bottom left)*\
+      The console is where the code from your R script will actually run. You can type commands directly in the console (next to the `>` symbol), but this is **not recommended**. Instead, you will write your code in the R script and when you run it, the results will show in the console. *For this class, you can ignore the Terminal and Jobs tabs on this panel.* 
+      c. *Environment (top right)*\
+      The environment shows you everything you have loaded into R (dataframes, objects, etc.). This tab can be helpful if you want quick information about a dataframe you have loaded (just click the drop-down arrow). *For this class, you can ignore the History, Connections, and Tutorial tabs on this panel. *
+      d. *Plots (bottom right)*\
+      The plots window is where your graphics will show up when you plot them! *For this class, you can ignore the Files, Packages, Help, and Viewer tabs on this panel.*  
+      
+### B. Organizing your R script
+
+As I said earlier, your R script is sort of like a Word document. When you write in Word, you typically organize your content into sections. I recommend doing the same thing in your R scripts!  
+
+You can organize your scripts however you like. In general, it is a good practice to put a title at the top and perhaps the date. Then leave space for loading the ‘packages’ you’ll use in your script. More on that later.
+
+Text chunks that are not code are called ‘comments’. You must put a `#` in front of each line of comments – otherwise R will try to run them as code! 
+
+To create a section header, put four or more `#`s after your comment.
+
+Here is an example of how I organize my R scripts:
+
+```{r, eval=FALSE}
+# __________________________________________________
+# TUTORIAL TITLE GOES HERE
+# date can go here
+# __________________________________________________
+
+# load packages first
+library(tidyverse)
+
+# A. Section header ####
+
+
+# B. Another section header ####
+
+```
+
+
+### C. Running your first line of code
+
+The very first program people usually write in any language is a very simple one. Your first command will be `print()`, which will simply print the text string “Hello World” to the console. 
+
+To run a line of code, just put your cursor on the line you want to run and press `Ctrl + Enter` on your keyboard. Alternatively, you can click the ‘Run’ button at the top right corner of your R script, but the keyboard shortcut is much more efficient.
+
+In your R script, write the following line of code, and then run it:
+
+```{r}
+# print 'Hello World' to the console
+print("Hello World")
+```
+
+Voila! You should see "Hello World" in the console.
+
+### D. Loading data into R
+
+Now that you’ve run your first line of code, let’s bring in an actual dataset and learn some basic commands. Data for each tutorial will be saved in the ‘Tutorial Data’ folder in Blackboard. You will download the data from Blackboard and save it to any folder on your computer. I recommend creating a folder for the course and saving your data there. 
+
+Start by downloading the data for this class. You can download it from Blackboard [here](URL). This is a comma-separated values (csv) file, which is sort of like an Excel file format, but generally more compatible with software like R. Most of the data in this class will be in a csv format. 
+
+These data include information on all degree-granting colleges and universities in DC, MD, and VA. They were downloaded from the Integrated Postsecondary Education Data System (IPEDS) data center [here](https://nces.ed.gov/ipeds/use-the-data). 
+
+To load a csv file into R you will use the `read.csv()` command. Inside the parentheses you will paste the file path (wherever you saved your download). For example, my file path is `"C:/Users/mccal/Documents/PPPA_6021/2023/01_basics/tutorial_data/ipeds_lim_1-18-23.csv"`. 
+
+On PCs, you’ll notice there are backslashes `\` when you paste your file path. R only accepts forward slashes `/` so you will need to make that change to your file paths in RStudio yourself (annoying, I know!). 
+
+We need to store our data as an ‘object’ – in this case, a **dataframe**. A dataframe is a basic data structure we’ll use most of the time in this course. Think of it like an excel table; it is a rectangle with rows and columns.
+
+I will name my dataframe `colleges` (you can name an object whatever you want). R’s assignment operator is `<-`. Name your object first, add your assignment operator, then whatever you want to assign to your object (in this case, we are reading in a csv and want to store it as an object). 
+
+```{r}
+# load our dataset
+colleges <- read.csv("C:/Users/mccal/Documents/PPPA_6021/2023/01_basics/tutorial_data/ipeds_lim_1-18-23.csv")
+```
+
+### E. Exploring a dataframe
+
+Now that you’ve loaded your dataframe, let’s start by looking at it. In R, we typically work with dataframes without actually ‘seeing’ the data structure, but as you’re learning it may be nice to ‘see’ how a dataframe looks. If you ever want to look at the whole dataframe, use the `View()` command, which opens up the dataframe in another tab. You can also click the dataframe name in the top right ‘Environment’ panel. 
+
+```{r,eval=F}
+# view dataframe in a new window
+View(colleges)
+```
+
+There are several commands that help you understand your dataframe:
+
+* `dim()` tells you how many rows (observations) and columns (variables) are in the dataframe.
+* `names()` tells you the variable names.
+* `str()` shows you the structure of the dataframe, including variable types. 
+* `head()` prints the first 6 observations in your dataframe. 
+
+We'll use each command below. 
+
+```{r}
+# how big is this dataframe?
+dim(colleges)
+```
+
+There are 168 observations and 10 variables in this dataframe.
+
+```{r}
+# what are the variable names?
+names(colleges)
+```
+
+These are our variable names.
+
+```{r}
+# what kind of variables?
+str(colleges)
+```
+
+I love the `str()` command because it tells you so much about each variable! It lists the type of variable (`state`, for example, is a character variable ‘chr’, while `totenrl` is an integer ‘int’), and the first few observations of each variable. 
+
+Finally, let’s see the first few rows of our dataframe with the `head()` command. By default, `head()` prints the first 6 observations:
+
+```{r}
+# first six rows
+head(colleges)
+```
+
+I want you to be familiar with these commands, but note that some of them you can accomplish in the ‘Environment’ tab in the upper right panel of RStudio. You’ll see your loaded dataframes listed with the number of rows and columns. If you click the downward arrow next to the dataframe name, you’ll see a description of the dataframe variables, much like the `str()` command. 
+
+### F. Getting info on variables of interest
+
+R includes thousands of functions that can perform thousands of tasks. Let’s use some basic R functions to better understand our variables. Let’s use the `summary()` function to see summary statistics for the `totenrl` variable (total number of undergraduates enrolled at each college in 2021-22). In R, we use the `$` sign to identify a variable (type the dataframe name, `$`, then the variable name). 
+
+```{r}
+# summary of a numeric variable
+summary(colleges$totenrl)
+```
+
+From these results, I can tell that the average undergraduate enrollment in DC/MA/VA colleges was approximately 6,025 students. The smallest college only enrolled 17 students! 
+
+While `summary()` gives us basic information about numeric variables, `table()` is a good command to get information on other types of variables. It tells us how many observations exist by value. For example, let’s see how many colleges fall into each category under the `control` variable. 
+
+```{r}
+# summary of a character variable
+table(colleges$control)
+```
+
+### G. Subsetting
+
+Subsetting means limiting your data. There are many ways to subset in R. Certain commands in base R can do this, but personally, I think they’re unintuitive. We will primarily use commands from the `tidyverse` package because I think they are easier to understand. `tidyverse` is a collection of packages that share the same grammar. It includes `ggplot2`, which we will use to make all our charts in this course. We load packages using the `library()` command. In general, it’s good practice to put all your `library()` commands at the beginning of your R script so you can load them all at once. 
+
+Let's load in `tidyverse`:
+
+```{r}
+# load packages
+library(tidyverse)
+```
+
+You'll notices several messages pop up when you load this package. As long as there isn’t an error, you can generally ignore these. 
+
+Let’s create a new dataframe that only includes VA colleges. In `tidyverse`, we connect code together using `%>%`, or a ‘pipe’ operator. Below, we will establish the dataframe we want to subset, add our pipe operator, then use the `filter` command to establish our subsetting condition: `filter(*condition*)`. When we are determining whether `state` equals 'VA', we use a conditional equals sign `==`.
+
+```{r}
+# limit to VA schools
+colleges_va <- colleges %>%
+  filter(state == "VA")
+```
+
+Let’s check to see if this worked. Run the `table` command on the `state` variable in my new dataframe:
+
+```{r}
+# check it
+table(colleges_va$state)
+```
+
+Hooray! VA is the only state included. There are 99 colleges in VA. 
+
+Now let’s create a dataframe that excludes private for-profit colleges. Notice I use the ‘does not equal’ operator `!=`:
+
+```{r}
+# exclude for-profits
+colleges_no_fp <- colleges %>%
+  filter(control != "Private for-profit")
+
+# check it
+table(colleges_no_fp$control)
+```
+
+I can also subset on multiple conditions. Let’s say I want a dataframe with public colleges in Maryland. I use the `&` operator. You would use `|` if you had an ‘or’ condition. 
+You'll notice when I 'check' my output with the `table()` command, I specify two variables. This is called a 'crosstab'.
+
+```{r}
+# filter on multiple conditions
+colleges_md_pub <- colleges %>%
+  filter(state == "MD" & control == "Public")
+
+# check it
+table(colleges_md_pub$state, colleges_md_pub$control)
+```
+
+When I ran my 'crosstab', I can see that the only combination of `state` and `control` is MD and Public. So I know my filtering worked. 
+
+Note that you can also subset *columns* using `tidyverse`. The command for this is `select()`. Here I select just the college name, state, and total enrollment variables:
+
+```{r}
+# subset columns
+colleges_3cols <- colleges %>%
+  select(institution,state,totenrl)
+```
+
+If I run the `names()` command on my new dataframe, I should only see those three variables:
+
+```{r}
+# check variable names
+names(colleges_3cols)
+```
+
+### H. Sorting
+
+Sorting is pretty straightforward in `tidyverse` using the `arrange()` command. Here’s how we would sort the colleges by the `totenrl` variable. First I sort, then I check my results using the `head()` command (look for the `totenrl` variable).
+
+```{r}
+# sort by total enrollment
+colleges <- colleges %>%
+  arrange(totenrl)
+
+# check it
+head(colleges)
+```
+
+Notice this sorted smallest to largest. To sort largest to smallest, just add `-` before your variable name in `arrange()`.
+
+```{r}
+# sort in descending order
+colleges <- colleges %>%
+  arrange(-totenrl)
+
+# check it
+head(colleges)
+```
+
+You’ll see that, out of all DC/MA/VA colleges, Northern Virginia Community College enrolled the most undergraduate students (74,794). 
+
+### I. Problem Set 1  
+
+#### 1. Where to turn in    
+
+Please turn in all your homework on Blackboard. 
+
+#### 2. What to turn in  
+
+I prefer you use `R Markdown` to turn in your tutorial code and problem set answers. `R Markdown` is a dynamic file type that runs your code and outputs the results into a pretty Word, PDF, or HTML document.  
+
+Start an `.Rmd` file by clicking `File > New File > R Markdown` in RStudio. A box will pop up asking you to choose a format for your document. Fill in the title and author boxes, select 'Word' as your output type, and click 'OK'.
+
+![ ](C:/Users/mccal/Documents/PPPA_6021/2023/01_basics/tutorial_pngs/markdown1.png)
+<br>
+<br>
+This will open a new tab in RStudio. The file will look like this (a little crazy!):
+<br>
+<br>
+
+![ ](C:/Users/mccal/Documents/PPPA_6021/2023/01_basics/tutorial_pngs/markdown2.png)
+
+<br>
+<br>
+Start by clearing out everything under your header so the file looks like this:
+<br>
+<br>
+
+![ ](C:/Users/mccal/Documents/PPPA_6021/2023/01_basics/tutorial_pngs/markdown3.png)
+
+<br>
+<br>
+Now you will fill in your content.
+
+* First type your answers to the homework. You don't need a comment sign `#` in R Markdown; just type like you would in Word. The **only difference** is that you need to type **2 spaces** after each paragraph so the next thing you write will break onto a new line.
+* You will then add your accompanying code (everything from the tutorial, plus your code to calculate the homework answers). To do this, find the green button with a `+` sign and a `C` on it in the upper right corner of your `.Rmd` window. Click it, then press the first option `R`. This will create a space for your code that looks like this:
+<br>
+<br>
+
+![ ](C:/Users/mccal/Documents/PPPA_6021/2023/01_basics/tutorial_pngs/markdown3b.png)
+<br>
+<br>
+Within this code chunk, simply copy and paste in **everything** from your R script.   
+
+Your file should look like this:  
+<br>
+<br>
+![ ](C:/Users/mccal/Documents/PPPA_6021/2023/01_basics/tutorial_pngs/markdown4.png)
+<br>
+<br>
+Now, find the `Knit` button at the top of the panel (with the cute yarn and needle next to it). When you click it, you'll be prompted to specify where you want to save your document, and under what name. Once you've done that, you have a Word document with all your code and output! 
+<br>
+<br>
+
+![ ](C:/Users/mccal/Documents/PPPA_6021/2023/01_basics/tutorial_pngs/markdown5.png)
+
+This is what you will upload to Blackboard.    
+
+#### 3. Questions 
+
+1. What type of variable is `institution`?  
+2. Why do we do `table(colleges$control)` and `summary(colleges$totenrl)` and not vice-versa?  
+3. Create a new dataframe that only includes institutions with total enrollment (`totenrl`) above 20,000 OR below 100. How many institutions meet these criteria?
+
+
+
